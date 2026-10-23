@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#09090c" />
+<title>ThumbLoader — YouTube Thumbnail Downloader</title>
+<meta name="description" content="ThumbLoader is a fast, simple YouTube thumbnail downloader. Preview and save available thumbnail resolutions on mobile, tablet, and desktop. Developed by Abuzar Taif." />
+<meta name="robots" content="index,follow" />
+<link rel="canonical" href="https://thumbloader.vercel.app/" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23ff3048'/%3E%3Cpath d='M48 22a6 6 0 0 0-4-4c-4-.9-12-.9-12-.9s-8 0-12 .9a6 6 0 0 0-4 4 45 45 0 0 0-1 10 45 45 0 0 0 1 10 6 6 0 0 0 4 4c4 .9 12 .9 12 .9s8 0 12-.9a6 6 0 0 0 4-4 45 45 0 0 0 1-10 45 45 0 0 0-1-10ZM28 39V25l12 7Z' fill='white'/%3E%3C/svg%3E" />
+<meta property="og:title" content="ThumbLoader — YouTube Thumbnail Downloader" />
+<meta property="og:description" content="Preview and save YouTube thumbnails in a few clicks." />
+<meta property="og:url" content="https://thumbloader.vercel.app/" />
+<meta property="og:type" content="website" />
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+:root{--bg:#08080b;--panel:#111116;--panel2:#17171e;--red:#ff3048;--red2:#d80d2b;--white:#f7f7fb;--muted:#a0a0ae;--line:rgba(255,255,255,.09);--shadow:0 22px 70px rgba(0,0,0,.4)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 50% -20%,rgba(255,48,72,.15),transparent 42%),var(--bg);color:var(--white);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;min-height:100vh;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,black,transparent 85%);z-index:-1}
+a{color:inherit;text-decoration:none}button,input{font:inherit}button{cursor:pointer}.wrap{width:min(1120px,calc(100% - 40px));margin:auto}
+nav{height:82px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);position:relative;z-index:5}
+.brand{display:flex;align-items:center;gap:11px;font-weight:900;letter-spacing:1.4px;font-size:20px}.brand-mark{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,#ff5366,#c90028);display:grid;place-items:center;box-shadow:0 0 28px rgba(255,48,72,.28);transform:rotate(-4deg)}.brand-mark svg{width:19px;fill:white}.brand span:last-child{color:var(--red)}
+.nav-actions{display:flex;align-items:center;gap:12px}.nav-link{color:var(--muted);font-size:13px;font-weight:650;padding:10px 12px;transition:.25s}.nav-link:hover{color:white}.btn{border:0;border-radius:12px;padding:12px 18px;font-weight:750;font-size:13px;transition:transform .25s,box-shadow .25s,background .25s;display:inline-flex;align-items:center;justify-content:center;gap:8px}.btn:hover{transform:translateY(-2px)}.btn-red{background:linear-gradient(135deg,var(--red),var(--red2));color:white;box-shadow:0 8px 24px rgba(255,48,72,.2)}.btn-red:hover{box-shadow:0 12px 30px rgba(255,48,72,.32)}.btn-ghost{background:rgba(255,255,255,.045);border:1px solid var(--line);color:white}.hero{text-align:center;padding:82px 0 40px;animation:rise .8s both}.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid rgba(255,48,72,.25);background:rgba(255,48,72,.07);border-radius:100px;color:#ff8190;font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}.pulse{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 12px var(--red);animation:pulse 1.6s infinite}
+h1{font-size:clamp(38px,6vw,68px);line-height:1.04;letter-spacing:-2.8px;margin:22px 0 18px;font-weight:900}.gradient{background:linear-gradient(100deg,#fff 5%,#ff9aa6 45%,#ff3048 90%);background-clip:text;-webkit-background-clip:text;color:transparent}.sub{max-width:610px;margin:0 auto;color:var(--muted);line-height:1.75;font-size:15px}
+.downloader{width:min(760px,100%);margin:34px auto 0;padding:10px;border:1px solid rgba(255,255,255,.11);background:rgba(18,18,24,.82);border-radius:19px;box-shadow:var(--shadow),0 0 70px rgba(255,48,72,.06);display:flex;gap:9px;backdrop-filter:blur(20px);transition:border .3s}.downloader:focus-within{border-color:rgba(255,48,72,.65);box-shadow:var(--shadow),0 0 0 4px rgba(255,48,72,.07)}
+.input-icon{width:22px;flex-shrink:0;color:#777;display:grid;place-items:center}.url-input{background:transparent;border:0;outline:0;color:white;min-width:0;flex:1;padding:12px 0;font-size:14px}.url-input::placeholder{color:#777784}.download-main{white-space:nowrap;padding:14px 20px}
+.helper{font-size:11px;color:#777783;margin-top:13px}.helper b{color:#aaa}
+.error{display:none;margin:12px auto 0;color:#ff7f8e;font-size:13px}.result{display:none;text-align:left;margin:26px auto 0;width:min(760px,100%);padding:20px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(145deg,rgba(25,25,32,.96),rgba(12,12,16,.96));animation:rise .45s both}.result.show{display:block}.result-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}.result-head h3{font-size:14px;margin:0}.status{font-size:10px;color:#72e6a0;letter-spacing:1px;font-weight:800}.preview{border-radius:13px;overflow:hidden;background:#08080b;aspect-ratio:16/9;display:grid;place-items:center;border:1px solid var(--line);position:relative}.preview img{width:100%;height:100%;object-fit:contain}.preview-placeholder{color:#777;font-size:13px}.quality-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.quality{padding:13px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025);display:flex;align-items:center;justify-content:space-between;gap:8px;transition:.25s}.quality:hover{border-color:rgba(255,48,72,.55);background:rgba(255,48,72,.06);transform:translateY(-2px)}.quality strong{display:block;font-size:12px}.quality small{display:block;color:var(--muted);font-size:10px;margin-top:4px}.qdl{border:0;width:32px;height:32px;border-radius:9px;background:rgba(255,48,72,.13);color:#ff6578;display:grid;place-items:center}.qdl:hover{background:var(--red);color:white}.section{padding:70px 0}.section-title{text-align:center;margin-bottom:30px}.section-title h2{font-size:clamp(26px,4vw,38px);letter-spacing:-1.2px;margin:0 0 10px}.section-title p{color:var(--muted);font-size:14px;margin:0}.features{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.feature{border:1px solid var(--line);background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.015));padding:25px;border-radius:18px;transition:.3s;animation:rise .7s both}.feature:hover{transform:translateY(-5px);border-color:rgba(255,48,72,.35);box-shadow:0 15px 40px rgba(0,0,0,.2)}.feature-icon{width:43px;height:43px;display:grid;place-items:center;border-radius:13px;background:rgba(255,48,72,.12);color:#ff596e;margin-bottom:20px}.feature-icon svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.feature h3{margin:0 0 9px;font-size:15px}.feature p{margin:0;color:var(--muted);font-size:13px;line-height:1.7}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}.step{text-align:center;padding:12px}.num{width:44px;height:44px;margin:0 auto 14px;border:1px solid rgba(255,48,72,.4);border-radius:14px;display:grid;place-items:center;color:#ff6678;background:rgba(255,48,72,.08);font-weight:900}.step h3{font-size:14px;margin:0 0 7px}.step p{font-size:12px;color:var(--muted);line-height:1.7;margin:0}footer{border-top:1px solid var(--line);padding:26px 0;color:#777783;font-size:11px}.footer-inner{display:flex;justify-content:space-between;gap:15px;align-items:center}.footer-inner strong{color:#ddd}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(10px);z-index:20;display:none;align-items:center;justify-content:center;padding:20px}.modal-backdrop.open{display:flex;animation:fade .2s}.modal{width:min(420px,100%);position:relative;padding:30px;border-radius:24px;border:1px solid rgba(255,255,255,.12);background:radial-gradient(ellipse at 100% 0,rgba(255,48,72,.14),transparent 45%),#111116;box-shadow:0 25px 100px rgba(0,0,0,.65);animation:pop .35s both}.close{position:absolute;right:16px;top:16px;background:rgba(255,255,255,.06);border:1px solid var(--line);color:#aaa;border-radius:9px;width:32px;height:32px}.modal-logo{width:47px;height:47px;border-radius:15px;background:linear-gradient(135deg,#ff5366,#c90028);display:grid;place-items:center;margin-bottom:21px;box-shadow:0 0 25px rgba(255,48,72,.22)}.modal h2{font-size:25px;margin:0 0 8px;letter-spacing:-.8px}.modal>p{color:var(--muted);font-size:13px;line-height:1.6;margin:0 0 22px}.field{margin:14px 0}.field label{display:block;font-size:11px;color:#b8b8c3;font-weight:700;margin-bottom:8px}.field input{width:100%;background:#0b0b0f;border:1px solid var(--line);border-radius:11px;padding:13px 14px;color:white;outline:0;font-size:13px;transition:.2s}.field input:focus{border-color:rgba(255,48,72,.65);box-shadow:0 0 0 3px rgba(255,48,72,.07)}.modal .btn{width:100%;margin-top:9px;padding:14px}.switch{text-align:center;color:var(--muted);font-size:12px;margin-top:18px}.switch button{background:none;border:0;color:#ff6678;font-weight:800}.demo-note{font-size:10px;color:#777783;text-align:center;line-height:1.6;margin-top:14px}.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:40;background:#19191f;border:1px solid var(--line);padding:12px 17px;border-radius:12px;color:white;font-size:12px;box-shadow:var(--shadow);transition:.3s}.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* Light theme overrides */
+body.light{--bg:#f4f5f8;--panel:#fff;--panel2:#f0f1f5;--white:#17171c;--muted:#626270;--line:rgba(15,15,25,.12);--shadow:0 22px 70px rgba(25,25,45,.12);background:radial-gradient(ellipse at 50% -20%,rgba(255,48,72,.12),transparent 42%),var(--bg);color:var(--white)}
+body.light:before{opacity:.07}
+body.light nav{border-bottom-color:var(--line)}
+body.light .downloader{background:rgba(255,255,255,.88);border-color:var(--line)}
+body.light .url-input{color:#17171c}
+body.light .url-input::placeholder{color:#777784}
+body.light .result{background:linear-gradient(145deg,#fff,#f6f6fa);border-color:var(--line)}
+body.light .quality{background:rgba(0,0,0,.025)}
+body.light .feature{background:linear-gradient(145deg,rgba(255,255,255,.95),rgba(255,255,255,.7))}
+body.light .modal{background:radial-gradient(ellipse at 100% 0,rgba(255,48,72,.1),transparent 45%),#fff;border-color:rgba(0,0,0,.12)}
+body.light .field input{background:#f6f6f9;color:#17171c;border-color:var(--line)}
+body.light .modal-logo{color:white}
+body.light .section-title p,body.light .step p,body.light .feature p{color:var(--muted)}
+body.light .gradient{background:linear-gradient(100deg,#17171c 5%,#c51c35 90%);background-clip:text;-webkit-background-clip:text;color:transparent}
+body.light .about-white{color:#17171c}
+
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}@keyframes fade{from{opacity:0}to{opacity:1}}@keyframes pop{from{opacity:0;transform:scale(.96) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}@keyframes pulse{50%{opacity:.35;box-shadow:0 0 3px var(--red)}}@media(max-width:700px){.wrap{width:min(100% - 28px,560px)}nav{height:70px}.nav-link{display:none}.brand{font-size:18px}.hero{padding:60px 0 25px}h1{letter-spacing:-1.7px}.sub{font-size:13px}.downloader{padding:7px;border-radius:15px;gap:7px}.url-input{font-size:12px}.download-main{padding:13px 12px;font-size:12px}.quality-grid{grid-template-columns:1fr}.quality{padding:12px}.features{grid-template-columns:1fr}.feature{padding:21px}.section{padding:48px 0}.steps{gap:10px}.step{padding:5px}.step p{font-size:11px}.footer-inner{flex-direction:column;text-align:center}.modal{padding:25px 22px}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<nav class="wrap">
+  <a class="brand" href="#" aria-label="ThumbLoader home"><span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.6 7.2a2.8 2.8 0 0 0-2-2C17.8 4.7 12 4.7 12 4.7s-5.8 0-7.6.5a2.8 2.8 0 0 0-2 2A29 29 0 0 0 2 12a29 29 0 0 0 .4 4.8 2.8 2.8 0 0 0 2 2c1.8.5 7.6.5 7.6.5s5.8 0 7.6-.5a2.8 2.8 0 0 0 2-2A29 29 0 0 0 22 12a29 29 0 0 0-.4-4.8ZM10 15.3V8.7l5.7 3.3Z"/></svg></span>THUMB<span>X</span></a>
+  <div class="nav-actions"><a class="nav-link" href="#features">Features</a><a class="nav-link" href="#about">About</a><a class="nav-link" href="#how">How it works</a><button class="btn btn-ghost" id="themeToggle" aria-label="Switch to light theme" title="Switch to light theme"><span id="themeIcon">☀</span></button><button class="btn btn-ghost" id="loginOpen">Log in</button><button class="btn btn-red" id="signupOpen">Get started <span>↗</span></button></div>
+</nav>
+<main>
+<section class="hero wrap">
+  <div class="eyebrow"><span class="pulse"></span> FAST · FREE · SIMPLE</div>
+  <h1>Your thumbnail.<br><span class="gradient">Full resolution.</span></h1>
+  <p class="sub">Grab a YouTube video thumbnail in seconds. Paste a link, preview available quality, and save the image — no complicated steps.</p>
+  <form class="downloader" id="downloadForm">
+    <span class="input-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M10 13a5 5 0 0 0 7.1 0l3-3a5 5 0 0 0-7.1-7.1l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.1 0l-3 3A5 5 0 0 0 11 21.1l1.7-1.7"/></svg></span>
+    <input id="videoUrl" class="url-input" type="url" placeholder="Paste YouTube video link here..." aria-label="YouTube video URL" autocomplete="url" required />
+    <button class="btn btn-red download-main" type="submit">Get thumbnail <span>→</span></button>
+  </form>
+  <div class="helper">Supports <b>youtube.com</b> and <b>youtu.be</b> links · No sign-in required to preview</div>
+  <div class="error" id="errorMsg" role="alert"></div>
+  <section class="result" id="result" aria-live="polite">
+    <div class="result-head"><h3>Thumbnail preview</h3><span class="status">● READY TO VIEW</span></div>
+    <div class="preview" id="preview"><span class="preview-placeholder">Your thumbnail will appear here</span></div>
+    <div class="quality-grid" id="qualityGrid"></div>
+  </section>
+</section>
+<section class="section wrap" id="features">
+  <div class="section-title"><h2>Small tool. <span class="gradient">Big energy.</span></h2><p>Everything you need, without the clutter.</p></div>
+  <div class="features">
+    <article class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5"/><path d="M5 17v3h14v-3"/></svg></div><h3>One-click downloads</h3><p>Choose a quality and open the image directly, ready to save on your device.</p></article>
+    <article class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9" r="1.5"/><path d="m21 15-5-5L5 20"/></svg></div><h3>Quality options</h3><p>Check maximum, standard, and smaller thumbnail variants when the video provides them.</p></article>
+    <article class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M10 18h4"/></svg></div><h3>Made for every screen</h3><p>A responsive layout that feels comfortable on mobile, tablet, laptop, and desktop.</p></article>
+  </div>
+</section>
+<section class="section wrap" id="about">
+  <div class="section-title"><h2>About <span class="gradient">ThumbLoader</span></h2>
+  <p style="max-width:700px;margin:0 auto;line-height:1.85">ThumbLoader is a fast, simple YouTube thumbnail downloader designed to help creators preview and save publicly available video thumbnails in different resolutions. Built with a clean interface, responsive layouts, and a focus on ease of use. <strong style="color:#fff">Developed by Abuzar Taif.</strong> ThumbLoader is an independent project and is not affiliated with YouTube or Google.</p></div>
+</section>
+<section class="section wrap" id="how">
+  <div class="section-title"><h2>Three steps. <span class="gradient">That's it.</span></h2><p>No confusing dashboard. Just the essentials.</p></div>
+  <div class="steps"><article class="step"><div class="num">01</div><h3>Copy a video link</h3><p>Copy the URL of a public YouTube video.</p></article><article class="step"><div class="num">02</div><h3>Paste it here</h3><p>We find the thumbnail image variants associated with the video ID.</p></article><article class="step"><div class="num">03</div><h3>Choose & save</h3><p>Pick a resolution and save the image using your browser.</p></article></div>
+</section>
+</main>
+<footer><div class="wrap footer-inner"><a class="brand" href="#" style="font-size:14px"><span class="brand-mark" style="width:27px;height:27px;border-radius:9px"><svg viewBox="0 0 24 24" style="width:14px"><path d="M21.6 7.2a2.8 2.8 0 0 0-2-2C17.8 4.7 12 4.7 12 4.7s-5.8 0-7.6.5a2.8 2.8 0 0 0-2 2A29 29 0 0 0 2 12a29 29 0 0 0 .4 4.8 2.8 2.8 0 0 0 2 2c1.8.5 7.6.5 7.6.5s5.8 0 7.6-.5a2.8 2.8 0 0 0 2-2A29 29 0 0 0 22 12a29 29 0 0 0-.4-4.8ZM10 15.3V8.7l5.7 3.3Z"/></svg></span>THUMB<span>X</span></a><span>Independent utility · Not affiliated with YouTube.</span><span>Respect creators' rights when using thumbnails.</span></div></footer>
+<div class="modal-backdrop" id="authBackdrop" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+  <div class="modal">
+    <button class="close" id="closeModal" aria-label="Close login">✕</button>
+    <div class="modal-logo"><svg width="23" viewBox="0 0 24 24" fill="white"><path d="M21.6 7.2a2.8 2.8 0 0 0-2-2C17.8 4.7 12 4.7 12 4.7s-5.8 0-7.6.5a2.8 2.8 0 0 0-2 2A29 29 0 0 0 2 12a29 29 0 0 0 .4 4.8 2.8 2.8 0 0 0 2 2c1.8.5 7.6.5 7.6.5s5.8 0 7.6-.5a2.8 2.8 0 0 0 2-2A29 29 0 0 0 22 12a29 29 0 0 0-.4-4.8ZM10 15.3V8.7l5.7 3.3Z"/></svg></div>
+    <h2 id="authTitle">Welcome back.</h2><p id="authSubtitle">Continue securely with your Google account.</p>
+    <div id="signupStep">
+      <div class="field"><label for="authName">YOUR NAME</label><input id="authName" type="text" placeholder="Enter your name" autocomplete="name" maxlength="80"></div>
+      <button class="btn btn-red" type="button" id="nextSignup" style="width:100%;padding:14px">Next <span>→</span></button>
+    </div>
+    <div id="googleStep" style="display:none">
+      <p id="googleStepText" style="font-size:12px;color:var(--muted);margin:0 0 15px">Continue with Google to finish signing in.</p>
+      <div id="googleButton" style="display:flex;justify-content:center;min-height:44px"></div>
+      <button class="btn btn-ghost" id="backSignup" type="button" style="width:100%;margin-top:10px">Back</button>
+    </div>
+    <div id="loginGoogleStep" style="display:none">
+      <div id="googleLoginButton" style="display:flex;justify-content:center;min-height:44px"></div>
+    </div>
+    <div class="switch"><span id="switchText">New here?</span> <button id="switchMode" type="button">Create an account</button></div>
+    <div class="demo-note" id="authNote">Google sign-in needs this domain to be authorized in Google Cloud Console. For production, verify the ID token on a secure backend before creating a session.</div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<script>
+const $ = (s) => document.querySelector(s);
+const form = $('#downloadForm'), input = $('#videoUrl'), result = $('#result'), error = $('#errorMsg'), preview = $('#preview'), qualityGrid = $('#qualityGrid');
+function parseVideoId(value){
+  try{
+    const u = new URL(value.trim());
+    const host = u.hostname.toLowerCase().replace(/^www\./,'').replace(/^m\./,'');
+    if(host === 'youtu.be'){const id=u.pathname.split('/').filter(Boolean)[0];return validId(id)?id:null;}
+    if(!['youtube.com','youtube-nocookie.com'].includes(host) && !host.endsWith('.youtube.com')) return null;
+    let id=u.searchParams.get('v');
+    if(!id){const parts=u.pathname.split('/').filter(Boolean);if(['embed','shorts','live','v'].includes(parts[0]))id=parts[1];}
+    return validId(id)?id:null;
+  }catch{return null;}
+}
+function validId(id){return !!id && /^[a-zA-Z0-9_-]{11}$/.test(id);}
+function toast(message){const t=$('#toast');t.textContent=message;t.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.remove('show'),3000);}
+const variants=[
+ {name:'Max resolution',size:'1280 × 720',file:'maxresdefault.jpg'},
+ {name:'High quality',size:'480 × 360',file:'hqdefault.jpg'},
+ {name:'Standard quality',size:'640 × 480*',file:'sddefault.jpg'},
+ {name:'Medium quality',size:'320 × 180',file:'mqdefault.jpg'},
+ {name:'Default',size:'120 × 90',file:'default.jpg'}
+];
+async function downloadImage(videoId, quality, filename, button){
+  // Download through the same-origin Vercel function so browsers receive an attachment
+  // instead of navigating to the remote image URL.
+  const oldText = button ? button.innerHTML : '';
+  if(button){button.disabled=true;button.style.opacity='.6';}
+  try{
+    toast('Preparing your download…');
+    const endpoint='/api/download?videoId='+encodeURIComponent(videoId)+'&quality='+encodeURIComponent(quality);
+    const response=await fetch(endpoint,{cache:'no-store'});
+    if(!response.ok){
+      let message='Could not download this thumbnail.';
+      try{const data=await response.json();if(data.error)message=data.error;}catch{}
+      throw new Error(message);
+    }
+    const blob=await response.blob();
+    if(!blob.type.startsWith('image/'))throw new Error('The server did not return an image.');
+    const objectUrl=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=objectUrl;a.download=filename;a.style.display='none';
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(objectUrl),2000);
+    toast('Download started.');
+  }catch(err){
+    toast(err.message || 'Download failed. Make sure the /api/download endpoint is deployed on Vercel.');
+    console.error(err);
+  }finally{
+    if(button){button.disabled=false;button.style.opacity='';button.innerHTML=oldText;}
+  }
+}
+function makeCard(v,id){
+  const card=document.createElement('div');card.className='quality';
+  const info=document.createElement('div'), strong=document.createElement('strong'), small=document.createElement('small'), button=document.createElement('button');
+  strong.textContent=v.name;small.textContent=v.size;button.className='qdl';button.type='button';button.setAttribute('aria-label','Open '+v.name+' thumbnail');button.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m-5-5 5 5 5-5"/><path d="M5 17v4h14v-4"/></svg>';
+  button.addEventListener('click',()=>downloadImage(id,v.file.replace('.jpg',''),'thumbloader-'+id+'-'+v.file,button));
+  info.append(strong,small);card.append(info,button);return card;
+}
+form.addEventListener('submit',e=>{
+  e.preventDefault();const id=parseVideoId(input.value);
+  error.style.display='none';result.classList.remove('show');qualityGrid.replaceChildren();
+  if(!id){error.textContent='Please enter a valid YouTube video link.';error.style.display='block';return;}
+  preview.innerHTML='';const img=document.createElement('img');img.alt='YouTube video thumbnail preview';img.src='https://img.youtube.com/vi/'+id+'/maxresdefault.jpg';
+  img.onerror=()=>{img.onerror=null;img.src='https://img.youtube.com/vi/'+id+'/hqdefault.jpg';};
+  img.onload=()=>{if(img.naturalWidth<=120){img.src='https://img.youtube.com/vi/'+id+'/hqdefault.jpg';}};
+  preview.appendChild(img);variants.forEach(v=>qualityGrid.appendChild(makeCard(v,id)));
+  result.classList.add('show');result.scrollIntoView({behavior:'smooth',block:'nearest'});
+});
+
+// Theme switch: light mode shows a moon/night button; dark mode shows a sun/day button.
+const themeToggle=$('#themeToggle'), themeIcon=$('#themeIcon');
+function updateThemeButton(){const light=document.body.classList.contains('light');themeIcon.textContent=light?'☾':'☀';themeToggle.title=light?'Switch to dark theme':'Switch to light theme';themeToggle.setAttribute('aria-label',themeToggle.title);}
+themeToggle.addEventListener('click',()=>{document.body.classList.toggle('light');updateThemeButton();});
+updateThemeButton();
+
+// Google Identity Services. The ID token should be verified by a backend before trusting identity in production.
+const GOOGLE_CLIENT_ID='564604785993-0198dqq5n0q6fb1anvm3jcmum2tgd1jj.apps.googleusercontent.com';
+const backdrop=$('#authBackdrop');let mode='login';let googleReady=false;let googleCredentialHandler=null;
+function openAuth(nextMode){
+  mode=nextMode;
+  $('#authTitle').textContent=mode==='signup'?'Let’s get you started.':'Welcome back.';
+  $('#authSubtitle').textContent=mode==='signup'?'First, tell us what we should call you.':'Log in using your Google account.';
+  $('#signupStep').style.display=mode==='signup'?'block':'none';
+  $('#googleStep').style.display='none';
+  $('#loginGoogleStep').style.display=mode==='login'?'block':'none';
+  $('#switchText').textContent=mode==='signup'?'Already have an account?':'New to ThumbLoader?';
+  $('#switchMode').textContent=mode==='signup'?'Log in':'Get started';
+  $('#authNote').textContent='Google sign-in requires this website origin to be authorized in Google Cloud Console. Production apps should verify Google ID tokens on a secure backend.';
+  backdrop.classList.add('open');document.body.style.overflow='hidden';
+  if(mode==='login') renderGoogleButton('googleLoginButton');
+  else setTimeout(()=>$('#authName').focus(),100);
+}
+function closeAuth(){backdrop.classList.remove('open');document.body.style.overflow='';}
+function handleGoogleCredential(response){
+  if(!response || !response.credential){toast('Google sign-in did not return a credential. Please try again.');return;}
+  // This demo does not create a server session. Never trust client-decoded token claims for authorization.
+  toast('Google returned a sign-in credential. Connect a secure backend to verify it and finish login.');
+  console.info('Google sign-in credential received. Send it to your backend for verification; do not log or store it in production.');
+}
+function renderGoogleButton(targetId){
+  const target=document.getElementById(targetId);
+  if(!target)return;
+  if(!window.google || !google.accounts || !google.accounts.id){
+    target.innerHTML='<button type="button" class="btn btn-ghost" style="width:100%;min-height:42px" disabled>Loading Google sign-in…</button>';
+    setTimeout(()=>renderGoogleButton(targetId),350);return;
+  }
+  target.innerHTML='';
+  google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:handleGoogleCredential,auto_select:false});
+  google.accounts.id.renderButton(target,{theme:document.body.classList.contains('light')?'outline':'filled_black',size:'large',shape:'pill',text:'continue_with',width:300,logo_alignment:'left'});
+  googleReady=true;
+}
+$('#loginOpen').addEventListener('click',()=>openAuth('login'));
+$('#signupOpen').addEventListener('click',()=>openAuth('signup'));
+$('#closeModal').addEventListener('click',closeAuth);
+$('#switchMode').addEventListener('click',()=>openAuth(mode==='signup'?'login':'signup'));
+$('#nextSignup').addEventListener('click',()=>{
+  const name=$('#authName').value.trim();
+  if(!name){$('#authName').focus();toast('Please enter your name first.');return;}
+  if(name.length>80){toast('Please use a shorter name.');return;}
+  $('#signupStep').style.display='none';$('#googleStep').style.display='block';$('#googleStepText').textContent='Hi '+name+' — continue with Google to finish creating your account.';renderGoogleButton('googleButton');
+});
+$('#backSignup').addEventListener('click',()=>{$('#googleStep').style.display='none';$('#signupStep').style.display='block';});
+backdrop.addEventListener('click',e=>{if(e.target===backdrop)closeAuth();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAuth();});
+window.addEventListener('load',()=>{if(window.google&&google.accounts&&google.accounts.id&&mode==='login'&&backdrop.classList.contains('open'))renderGoogleButton('googleLoginButton');});
+</script>
+</body>
+</html>
